@@ -4,8 +4,11 @@
 *{ margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito',sans-serif;}
 :root{ font-size: 10px; }
 
-.main{
+body{
     background-color: teal;
+}
+
+.main{
     min-height: 100vh;
 
     display: flex;

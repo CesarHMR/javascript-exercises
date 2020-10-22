@@ -1,0 +1,64 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+*{ margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito',sans-serif;}
+:root{ font-size: 10px; }
+
+.main{
+    height: 100vh;
+    background-color: gray;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container{
+    width: 30rem;
+    min-height: 40rem;
+
+    padding: 3rem;
+
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0 0 3rem rgba(0, 0, 0, 0.315);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.day-image{
+    width: 20rem;
+    height: 20rem;
+    overflow: hidden;
+
+    border-radius: 100%;
+    background-color: gray;
+}
+
+.day-image img{
+    justify-self: center;
+}
+
+hr{
+    width: 100%;
+    border: rgb(185, 185, 185) .1rem solid;
+    border-radius: 1rem;
+    margin: 2rem 0;
+}
+
+.day-name{
+    color: gray;
+    font-weight: 700;
+    margin-bottom: 1.3rem;
+}
+
+.day-quote{
+    color: gray;
+    font-size: 1.2rem;
+    font-style: italic;
+    text-align: center;
+}
