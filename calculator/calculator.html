@@ -4,40 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator</title>
-    <link rel="stylesheet" href="./calculator.css" />
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/calculator.css" />
+    <link rel="stylesheet" href="./css/code.css">
   </head>
   <body>
     <div class="main">
       <div class="calculator">
-        <div class="visor">
-          <h1></h1>
+
+        <div class="calculator__visor">
+            <div id="secundary">
+                <div id="n1">1</div>
+                <div id="op">+</div>
+                <div id="n2">1</div>
+            </div>
+            <div id="main">1</div>
         </div>
+
         <hr>
         <hr>
-        <div class="input">
-            <button id="clean" onclick="reset()">clean</button>
-          <div class="math">
-            <button onclick="setMathOperation('+')">+</button>
-            <button onclick="setMathOperation('-')">-</button>
-            <button onclick="setMathOperation('*')">x</button>
-            <button onclick="setMathOperation('/')">&divide;</button>
+
+        <div class="calculator__input-area">
+
+            <button id="clean" onclick="ResetAll()">clean</button>
+
+          <div class="calculator__input-area__math">
+            <button onclick="SetMathOperation(addition)">+</button>
+            <button onclick="SetMathOperation(subtraction)">-</button>
+            <button onclick="SetMathOperation(multiplication)">x</button>
+            <button onclick="SetMathOperation(division)">&divide;</button>
           </div>
-          <div class="numbers">
-            <button onclick="typeNumber(event)">7</button>
-            <button onclick="typeNumber(event)">8</button>
-            <button onclick="typeNumber(event)">9</button>
-            <button onclick="typeNumber(event)">4</button>
-            <button onclick="typeNumber(event)">5</button>
-            <button onclick="typeNumber(event)">6</button>
-            <button onclick="typeNumber(event)">1</button>
-            <button onclick="typeNumber(event)">2</button>
-            <button onclick="typeNumber(event)">3</button>
-            <button onclick="typeNumber(event)">.</button>
-            <button onclick="typeNumber(event)">0</button>
-            <button onclick="executeMathOperation(true)">=</button>
+
+          <div class="calculator__input-area__numbers">
+            <button onclick="TypeNumber(7)">7</button>
+            <button onclick="TypeNumber(8)">8</button>
+            <button onclick="TypeNumber(9)">9</button>
+            <button onclick="TypeNumber(4)">4</button>
+            <button onclick="TypeNumber(5)">5</button>
+            <button onclick="TypeNumber(6)">6</button>
+            <button onclick="TypeNumber(1)">1</button>
+            <button onclick="TypeNumber(2)">2</button>
+            <button onclick="TypeNumber(3)">3</button>
+            <button onclick="TypeNumber()">.</button>
+            <button onclick="TypeNumber(0)">0</button>
+            <button onclick="ExecuteMathOperation()">=</button>
           </div>
-        </div>
-      </div>
+
+        </div><!--end calculator input area-->
+
+      </div><!--end calculator-->
 
       <div class="code-container">
           <button class="copy">copy</button>
@@ -53,7 +68,7 @@ let lastResult = ""         //track of the last operation result, in case the us
 let canAddSign = false      //controls the entrace of the sign in the viewport - avoid user from add sign after sign Ex:(12 + + - 8)
 let needToClean = false     //if it should clean the viewport
 
-function typeNumber(event){
+function TypeNumber(event){
     if(needToClean){//clean viewport for a new operation
         cleanViewport()
         needToClean = false
@@ -170,6 +185,8 @@ function bothNumbersExist(){ return firstNumber !== "" && currentNumber !== "" }
 function anyOfTheNumbersIsEmpty(){ return firstNumber === "" || currentNumber === "" }            </textarea>
       </div>
     </div>
+
+
     <script src="./calculator.js"></script>
     <script src="./copy-code.js"></script>
   </body>

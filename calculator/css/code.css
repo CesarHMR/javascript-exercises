@@ -1,0 +1,52 @@
+.code-container{
+    width: 100rem;
+    height: 50rem;
+    box-shadow: 0 0 3rem rgba(0, 0, 0, 0.5);
+    margin-bottom: 10rem;
+}
+.code{
+    width: 100rem;
+    height: 50rem;
+    
+    padding: 3rem;
+
+    overflow: hidden;
+    overflow-y: scroll;
+
+    background-color: #1E1E1E;
+    border-radius: 0 0 .5rem .5rem;
+    border: none;
+
+    font-size: 1.2rem;
+    color: rgb(0, 158, 158);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+
+    resize: none;
+}
+
+.copy{
+    width: 100%;
+    height: 5rem;
+
+    background-color: rgb(0, 158, 158);
+    border-bottom: teal solid .3rem;
+    border: none;
+
+    color: rgb(255, 255, 255);
+    font-family: 'Nunito' sans-serif;
+    font-weight: 500;
+    font-size: 2.2rem;
+
+    cursor: pointer;
+    outline: none;
+
+    transition: background 200ms;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.copy:hover{
+    background-color: rgb(0, 184, 184);
+}

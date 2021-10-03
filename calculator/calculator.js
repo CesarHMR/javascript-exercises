@@ -1,114 +1,97 @@
-const resultViewport = document.querySelector('.visor h1')
+//   ------------------
+//   |   n1 | op | n2 |
+//   ------------------
+//   |           main |
+//   ------------------
 
-let currentNumber = ""      //number that the user is typing - eventually it turns in the first Number and the second Number
-let firstNumber = ""        //first number in the operation Ex:(n1 + n2 = result)
-let secondNumber = ""       //second number in the operation Ex:(n1 + n2 = result)
-let currentOperation = ""   //current arithmetic operatior
-let lastResult = ""         //track of the last operation result, in case the users wants to operate with it
+const mainVisor = document.querySelector('#main')
+const n1Visor = document.querySelector('#n1')
+const n2Visor = document.querySelector('#n2')
+const operatorVisor = document.querySelector('#op')
 
-let canAddSign = false      //controls the entrace of the sign in the viewport - avoid user from add sign after sign Ex:(12 + + - 8)
-let needToClean = false     //if it should clean the viewport
+let main = null;
+let n1 = null;
+let n2 = null;
+let operation = null;
 
-function typeNumber(event){
-    if(needToClean){//clean viewport for a new operation
-        cleanViewport()
-        needToClean = false
+let currentNumber = "";
+
+function TypeNumber(number) {
+    if (n1 !== null && n2 !== null && main !== null) {
+        ResetAll()
     }
 
-    number = event.currentTarget.innerHTML  //get content from button
-    currentNumber += number                 //appends to currentNumber
-    apendViewport(number)                   //appends to viewport
-
-    if(firstNumber === ""){
-        lastResult = ""
-    }
+    currentNumber += number
+    main = parseFloat(currentNumber)
+    UpdateVisorText()
 }
 
-function setMathOperation(operation){
-    
-    if(lastResult !== "" && firstNumber === ""){//this make that after use '=' sign, the user still can operate with the result
-        firstNumber = lastResult
-    }
-    else if(firstNumber !== "" && currentNumber !== ""){//it can operate after a operation without using '=' sign Ex:1 + 1 + 1 + 1 + 1
-        executeMathOperation(false)
-    }
-    else if(currentNumber !== ""){//Set the current number as the first number
-        firstNumber = currentNumber
+function SetMathOperation(op) {
+    operation = op
+
+    if (n1 === null) {
+        n1 = parseFloat(currentNumber)
         currentNumber = ""
-        canAddSign = true
     }
 
-    if(canAddSign){//if should add the sign in the viewport
-        currentOperation = operation
-        apendViewport(` ${operation} `)
-        canAddSign = false
-    }
-
-    needToClean = false
+    UpdateVisorText()
 }
 
-function executeMathOperation(continueOperationAfterResult){
-    if(anyOfTheNumbersIsEmpty()){
+function ExecuteMathOperation() {
+    if (n1 === null || currentNumber === "") {
+        console.log("invalid operation!")
         return
     }
 
-    secondNumber = currentNumber
-    const n1 = parseFloat(firstNumber)
-    const n2 = parseFloat(secondNumber)
-    let result
-
-    switch(currentOperation){
-        case "+":
-            result = n1 + n2
-            break;
-        case "-":
-            result = n1 - n2
-            break;
-        case "*":
-            result = n1 * n2
-            break;
-        case "/":
-            result = n1 / n2
-            break;
+    if (n1 !== null && n2 !== null && main !== null) {
+        n1 = main;
     }
 
-    cleanViewport()
-    apendViewport(result)
+    if (n2 === null)
+        n2 = currentNumber === null ? n2 : parseFloat(currentNumber)
 
+    currentNumber = operation(n1, n2).toString()
+    main = parseFloat(currentNumber)
+
+    UpdateVisorText()
+}
+
+function UpdateVisorText() {
+    let mainText = main === null ? "" : main.toString()
+    let n1Text = n1 === null ? "" : n1.toString();
+    let n2Text = n2 === null ? "" : n2.toString();
+    let opText = operation === null ? "" : OperationSign(operation)
+
+    mainVisor.innerHTML = mainText;
+    n1Visor.innerHTML = n1Text;
+    n2Visor.innerHTML = n2Text;
+    operatorVisor.innerHTML = opText;
+}
+
+function ResetAll() {
     currentNumber = ""
-    secondNumber = ""
-    lastResult = result
-    canAddSign = true
+    main = null
+    n1 = null
+    n2 = null
+    operation = null
 
-    if(continueOperationAfterResult)
-    {
-        firstNumber = ""
-        needToClean = true
-    }
-    else
-    {
-        firstNumber = result
+    UpdateVisorText()
+}
+
+function OperationSign(operation) {
+    switch (operation) {
+        case addition:
+            return " + "
+        case subtraction:
+            return " - "
+        case multiplication:
+            return " * "
+        case division:
+            return " &divide; "
     }
 }
 
-function reset(){
-    console.log("entrei")
-    currentNumber = ""      
-    firstNumber = ""
-    secondNumber = ""       
-    currentOperation = ""   
-    lastResult = ""        
-    
-    canAddSign = false     
-    needToClean = false
-
-    cleanViewport()
-    }
-
-function apendViewport(text){ resultViewport.innerHTML += text }
-
-function cleanViewport(){ resultViewport.innerHTML = "" }
-
-function bothNumbersExist(){ return firstNumber !== "" && currentNumber !== "" }
-
-function anyOfTheNumbersIsEmpty(){ return firstNumber === "" || currentNumber === "" }
+const addition = (n1, n2) => n1 + n2
+const subtraction = (n1, n2) => n1 - n2
+const multiplication = (n1, n2) => n1 * n2
+const division = (n1, n2) => n1 / n2
