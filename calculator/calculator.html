@@ -1,193 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator</title>
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/calculator.css" />
     <link rel="stylesheet" href="./css/code.css">
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="main">
-      <div class="calculator">
+        <div class="calculator">
 
-        <div class="calculator__visor">
-            <div id="secundary">
-                <div id="n1">1</div>
-                <div id="op">+</div>
-                <div id="n2">1</div>
+            <div class="calculator__visor">
+                <div id="secundary">
+                    <div id="n1">1</div>
+                    <div id="op">+</div>
+                    <div id="n2">1</div>
+                </div>
+                <div id="main">1</div>
             </div>
-            <div id="main">1</div>
+
+            <div class="calculator__input-area">
+
+
+                <div class="calculator__input-area__math">
+                    <button id="clean" onclick="ResetAll()">clean</button>
+                    <button onclick="SetMathOperation(addition)">+</button>
+                    <button onclick="SetMathOperation(subtraction)">-</button>
+                    <button onclick="SetMathOperation(multiplication)">x</button>
+                    <button onclick="SetMathOperation(division)">&divide;</button>
+                </div>
+
+                <div class="calculator__input-area__numbers">
+                    <button onclick="TypeNumber(7)">7</button>
+                    <button onclick="TypeNumber(8)">8</button>
+                    <button onclick="TypeNumber(9)">9</button>
+                    <button onclick="TypeNumber(4)">4</button>
+                    <button onclick="TypeNumber(5)">5</button>
+                    <button onclick="TypeNumber(6)">6</button>
+                    <button onclick="TypeNumber(1)">1</button>
+                    <button onclick="TypeNumber(2)">2</button>
+                    <button onclick="TypeNumber(3)">3</button>
+                    <button onclick="TypeNumber('.')">.</button>
+                    <button onclick="TypeNumber(0)">0</button>
+                    <button onclick="ExecuteMathOperation()">=</button>
+                </div>
+
+            </div>
+            <!--end calculator input area-->
+
         </div>
+        <!--end calculator-->
 
-        <hr>
-        <hr>
+        <div class="code-container">
+            <button class="copy">Copy this code</button>
+            <textarea class="code" readonly>
+//   ------------------
+//   |   n1 | op | n2 |
+//   ------------------
+//   |           main |
+//   ------------------
 
-        <div class="calculator__input-area">
+const mainVisor = document.querySelector('#main')
+const n1Visor = document.querySelector('#n1')
+const n2Visor = document.querySelector('#n2')
+const operatorVisor = document.querySelector('#op')
 
-            <button id="clean" onclick="ResetAll()">clean</button>
+let main = null;
+let n1 = null;
+let n2 = null;
+let operation = null;
 
-          <div class="calculator__input-area__math">
-            <button onclick="SetMathOperation(addition)">+</button>
-            <button onclick="SetMathOperation(subtraction)">-</button>
-            <button onclick="SetMathOperation(multiplication)">x</button>
-            <button onclick="SetMathOperation(division)">&divide;</button>
-          </div>
+let currentNumber = "";
 
-          <div class="calculator__input-area__numbers">
-            <button onclick="TypeNumber(7)">7</button>
-            <button onclick="TypeNumber(8)">8</button>
-            <button onclick="TypeNumber(9)">9</button>
-            <button onclick="TypeNumber(4)">4</button>
-            <button onclick="TypeNumber(5)">5</button>
-            <button onclick="TypeNumber(6)">6</button>
-            <button onclick="TypeNumber(1)">1</button>
-            <button onclick="TypeNumber(2)">2</button>
-            <button onclick="TypeNumber(3)">3</button>
-            <button onclick="TypeNumber()">.</button>
-            <button onclick="TypeNumber(0)">0</button>
-            <button onclick="ExecuteMathOperation()">=</button>
-          </div>
-
-        </div><!--end calculator input area-->
-
-      </div><!--end calculator-->
-
-      <div class="code-container">
-          <button class="copy">copy</button>
-          <textarea class="code" readonly>
-const resultViewport = document.querySelector('.visor h1')
-
-let currentNumber = ""      //number that the user is typing - eventually it turns in the first Number and the second Number
-let firstNumber = ""        //first number in the operation Ex:(n1 + n2 = result)
-let secondNumber = ""       //second number in the operation Ex:(n1 + n2 = result)
-let currentOperation = ""   //current arithmetic operatior
-let lastResult = ""         //track of the last operation result, in case the users wants to operate with it
-
-let canAddSign = false      //controls the entrace of the sign in the viewport - avoid user from add sign after sign Ex:(12 + + - 8)
-let needToClean = false     //if it should clean the viewport
-
-function TypeNumber(event){
-    if(needToClean){//clean viewport for a new operation
-        cleanViewport()
-        needToClean = false
+function TypeNumber(number) {
+    if (n1 !== null && n2 !== null && main !== null) {
+        ResetAll()
     }
 
-    number = event.currentTarget.innerHTML  //get content from button
-    currentNumber += number                 //appends to currentNumber
-    apendViewport(number)                   //appends to viewport
-
-    if(firstNumber === ""){
-        lastResult = ""
-    }
+    currentNumber += number
+    main = parseFloat(currentNumber)
+    UpdateVisorText()
 }
 
-function setMathOperation(operation){
+function SetMathOperation(op) {
+    if (currentNumber === "")
+        return
+
+    n1 = parseFloat(currentNumber)
+    operation = op
     
-    if(lastResult !== "" && firstNumber === ""){//this make that after use '=' sign, the user still can operate with the result
-        firstNumber = lastResult
-    }
-    else if(firstNumber !== "" && currentNumber !== ""){//it can operate after a operation without using '=' sign Ex:1 + 1 + 1 + 1 + 1
-        executeMathOperation(false)
-    }
-    else if(currentNumber !== ""){//Set the current number as the first number
-        firstNumber = currentNumber
+    if (!(n1 !== null && n2 !== null && main !== null))
         currentNumber = ""
-        canAddSign = true
-    }
 
-    if(canAddSign){//if should add the sign in the viewport
-        currentOperation = operation
-        apendViewport(` ${operation} `)
-        canAddSign = false
-    }
-
-    needToClean = false
+    UpdateVisorText()
 }
 
-function executeMathOperation(continueOperationAfterResult){
-    if(anyOfTheNumbersIsEmpty()){
+function ExecuteMathOperation() {
+    if (n1 === null || currentNumber === "") {
+        console.log("invalid operation!")
         return
     }
 
-    secondNumber = currentNumber
-    const n1 = parseFloat(firstNumber)
-    const n2 = parseFloat(secondNumber)
-    let result
-
-    switch(currentOperation){
-        case "+":
-            result = n1 + n2
-            break;
-        case "-":
-            result = n1 - n2
-            break;
-        case "*":
-            result = n1 * n2
-            break;
-        case "/":
-            result = n1 / n2
-            break;
+    if (n1 !== null && n2 !== null && main !== null) {
+        n1 = main;
     }
 
-    cleanViewport()
-    apendViewport(result)
+    if (n2 === null)
+        n2 = currentNumber === null ? n2 : parseFloat(currentNumber)
 
+    currentNumber = operation(n1, n2).toString()
+    main = parseFloat(currentNumber)
+
+    UpdateVisorText()
+}
+
+function UpdateVisorText() {
+    let mainText = main === null ? "" : main.toString()
+    let n1Text = n1 === null ? "" : n1.toString();
+    let n2Text = n2 === null ? "" : n2.toString();
+    let opText = operation === null ? "" : OperationSign(operation)
+
+    mainVisor.innerHTML = mainText;
+    n1Visor.innerHTML = n1Text;
+    n2Visor.innerHTML = n2Text;
+    operatorVisor.innerHTML = opText;
+}
+
+function ResetAll() {
     currentNumber = ""
-    secondNumber = ""
-    lastResult = result
-    canAddSign = true
+    main = null
+    n1 = null
+    n2 = null
+    operation = null
 
-    if(continueOperationAfterResult)
-    {
-        firstNumber = ""
-        needToClean = true
-    }
-    else
-    {
-        firstNumber = result
+    UpdateVisorText()
+}
+
+function OperationSign(operation) {
+    switch (operation) {
+        case addition:
+            return " + "
+        case subtraction:
+            return " - "
+        case multiplication:
+            return " * "
+        case division:
+            return " &divide; "
     }
 }
 
-function reset(){
-    let currentNumber = ""      
-    let firstNumber = ""
-    let secondNumber = ""       
-    let currentOperation = ""   
-    let lastResult = ""        
-    
-    let canAddSign = false     
-    let needToClean = false
-
-    cleanViewport()
-    }
-
-function reset(){
-    currentNumber = ""      
-    firstNumber = ""
-    secondNumber = ""       
-    currentOperation = ""   
-    lastResult = ""        
-    
-    canAddSign = false     
-    needToClean = false
-
-    cleanViewport()
-}
-
-function apendViewport(text){ resultViewport.innerHTML += text }
-
-function cleanViewport(){ resultViewport.innerHTML = "" }
-
-function bothNumbersExist(){ return firstNumber !== "" && currentNumber !== "" }
-
-function anyOfTheNumbersIsEmpty(){ return firstNumber === "" || currentNumber === "" }            </textarea>
-      </div>
+const addition = (n1, n2) => n1 + n2
+const subtraction = (n1, n2) => n1 - n2
+const multiplication = (n1, n2) => n1 * n2
+const division = (n1, n2) => n1 / n2
+            </textarea>
+        </div>
     </div>
 
 
     <script src="./calculator.js"></script>
     <script src="./copy-code.js"></script>
-  </body>
+</body>
+
 </html>

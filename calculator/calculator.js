@@ -27,12 +27,14 @@ function TypeNumber(number) {
 }
 
 function SetMathOperation(op) {
-    operation = op
+    if (currentNumber === "")
+        return
 
-    if (n1 === null) {
-        n1 = parseFloat(currentNumber)
+    n1 = parseFloat(currentNumber)
+    operation = op
+    
+    if (!(n1 !== null && n2 !== null && main !== null))
         currentNumber = ""
-    }
 
     UpdateVisorText()
 }
